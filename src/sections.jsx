@@ -1,220 +1,4 @@
-const { useState, useEffect, useRef, useMemo } = React;
-
-const skills = [
-  { cat: "Languages", items: "C++  ·  Java  ·  C#  ·  Python  ·  PHP  ·  SQL" },
-  { cat: "Frameworks & Libraries", items: "Laravel  ·  React  ·  Vue  ·  PrimeVue  ·  Ant Design  ·  Tailwind  ·  ASP.NET  ·  Flask" },
-  { cat: "Web", items: "HTML  ·  CSS  ·  JavaScript" },
-  { cat: "Databases", items: "MySQL  ·  PostgreSQL  ·  MSSQL" },
-  { cat: "Tools & Design", items: "Git  ·  GitHub  ·  VS Code  ·  Figma  ·  Canva  ·  MS Office" },
-  { cat: "Documentation", items: "Markdown  ·  Technical Writing  ·  Developer Guides" },
-  { cat: "Languages Spoken", items: "English (Fluent)  ·  Chinese (Fluent)  ·  Malay (Familiar)" },
-];
-
-const accentPresets = [
-  { name: "Indigo", light: "#405b76", dark: "#8fb4d8" },
-  { name: "Clay", light: "#9b4f38", dark: "#e59b7d" },
-  { name: "Moss", light: "#496342", dark: "#9fc18e" },
-  { name: "Plum", light: "#694b63", dark: "#c29bbb" },
-  { name: "Ochre", light: "#8d692f", dark: "#d6b56b" },
-];
-
-const projects = [
-  {
-    id: 101,
-    type: "work",
-    title: "Blog CMS with Custom Image Cropper",
-    tags: ["Laravel", "PHP", "Tailwind", "Spatie"],
-    desc: "A full CRUD blog system built to learn the company's Laravel stack, featuring an original image cropping tool built from scratch.",
-    features: [
-      "Create, edit, and soft-delete posts through a modal editor with autosave",
-      "Card and table views, with table data exportable to CSV",
-      "Built a custom JS cropping tool (zoom, pan, frame) — images save pre-cropped via Spatie Media Library",
-      "Mentor specifically praised the cropping feature as a standout addition",
-    ],
-    stats: [
-      { label: "Views", value: "Card + Table" },
-      { label: "Export", value: "CSV" },
-      { label: "Media", value: "Custom cropper" },
-    ],
-    media: [],
-    demo: null,
-    github: null,
-  },
-  {
-    id: 102,
-    type: "work",
-    title: "QCG Company Site — Figma to Vue",
-    tags: ["Vue", "Figma MCP", "i18n", "Responsive"],
-    desc: "Converted a client's Figma-designed company profile site into a pixel-accurate Vue.js frontend across five pages.",
-    features: [
-      "Rebuilt Home, About, Accounts, Account Support & Market pages from an initial Figma MCP scaffold",
-      "Localized across 5 languages: English, Simplified & Traditional Chinese, Japanese, Korean",
-      "Tuned layouts individually across sm/md/lg breakpoints, with lg-and-up sharing one layout",
-      "Achieved 1:1 visual match through manual side-by-side design comparison",
-    ],
-    stats: [
-      { label: "Pages", value: "5" },
-      { label: "Languages", value: "5" },
-      { label: "Breakpoints", value: "4" },
-    ],
-    media: [],
-    demo: null,
-    github: null,
-  },
-  {
-    id: 103,
-    type: "work",
-    title: "PrimeVue v5 — R&D & Component Docs",
-    tags: ["Vue", "PrimeVue", "Documentation"],
-    desc: "A research project evaluating PrimeVue v5's design-token system and theming architecture, paired with a small full-stack product management app.",
-    features: [
-      "Documented setup, v5's design token architecture, and style/config overrides in a developer guide",
-      "Explored and catalogued 10 core components, from forms to data display",
-      "Delivered research notes, proof-of-concept code, and a findings & recommendations report",
-      "Mentor specifically praised the documentation quality",
-    ],
-    stats: [
-      { label: "Components documented", value: "10" },
-      { label: "Deliverables", value: "4 docs" },
-    ],
-    componentTags: ["Button", "InputText", "Select", "Checkbox", "RadioButton", "Dialog", "Card", "DataTable", "Toast", "Badge"],
-    media: [],
-    demo: null,
-    github: null,
-  },
-  {
-    id: 104,
-    type: "work",
-    status: "In Progress",
-    title: "React + Ant Design Component Playground",
-    tags: ["React", "Ant Design", "In Progress"],
-    desc: "A reusable component library wrapping Ant Design with sensible defaults, prop docs, and live variant examples — built so any teammate can npm run dev and copy a component straight into their project.",
-    features: [
-      "Wrapping 10+ of Ant Design's 14 core components with predefined props",
-      "Each component ships with an interactive playground and multiple variant examples",
-      "Written to be copy-paste ready for other teams and future interns",
-      "Currently in active development",
-    ],
-    stats: [
-      { label: "Components", value: "10 of 14" },
-      { label: "Status", value: "In progress" },
-    ],
-    media: [],
-    demo: null,
-    github: null,
-  },
-  {
-    id: 1,
-    type: "academic",
-    title: "Document-Based Multimodal Chatbot",
-    tags: ["Python", "Flask", "PostgreSQL", "AI/ML"],
-    desc: "A web-based chatbot that understands both text and images in academic documents, with full session and citation tracking.",
-    features: [
-      "Integrated document analysis & image understanding APIs",
-      "Relational DB schema for sessions, conversations, citation tracking",
-      "Solo project — fully designed and developed independently",
-    ],
-    media: [
-      { type: "image", src: "assets/Project1/1.png" },
-      { type: "image", src: "assets/Project1/2.png" },
-      { type: "image", src: "assets/Project1/3.png" },
-      { type: "image", src: "assets/Project1/4.png" },
-    ],
-    demo: null,
-    github: null,
-  },
-  {
-    id: 2,
-    type: "academic",
-    title: "Multiuser E-Commerce — Agriculture",
-    tags: ["PHP", "MySQL", "JavaScript", "CSS"],
-    desc: "A team-built multiuser e-commerce platform for an agriculture business, with customer purchase flows and product reviews.",
-    features: [
-      "Designed customer purchase & product review workflow",
-      "Led team coordination and managed GitHub repository",
-      "Debugged and resolved technical issues during development",
-    ],
-    media: [
-      { type: "image", src: "assets/Project2/1.png" },
-      { type: "image", src: "assets/Project2/2.png" },
-      { type: "image", src: "assets/Project2/3.png" },
-      { type: "image", src: "assets/Project2/4.png" },
-      { type: "image", src: "assets/Project2/5.png" },
-      { type: "image", src: "assets/Project2/6.png" },
-      { type: "image", src: "assets/Project2/7.png" },
-      { type: "image", src: "assets/Project2/8.png" },
-      { type: "image", src: "assets/Project2/9.png" },
-      { type: "image", src: "assets/Project2/10.png" },
-    ],
-    demo: null,
-    github: "https://github.com/Cloudie-yun/SmartMart",
-  },
-  {
-    id: 3,
-    type: "academic",
-    title: "Full Stack Bakery E-Commerce",
-    tags: ["ASP.NET", "C#", "MSSQL"],
-    desc: "A complete e-commerce web app for a bakery, featuring a customer storefront and a full admin panel.",
-    features: [
-      "Customer & administrative modules",
-      "Product management, shopping carts, order processing",
-      "Capstone project — Diploma graduation",
-    ],
-    media: [{ type: "video", src: "assets/Project3/DemoVideo.mp4" }],
-    demo: null,
-    github: "https://github.com/Cloudie-yun/E-Commerce-Website-for-bakeries",
-  },
-  {
-    id: 4,
-    type: "academic",
-    title: "TO-DO List Tracker",
-    tags: ["PHP", "JavaScript", "CSS"],
-    desc: "A simple and minimalist to-do list tracker that helps users manage tasks, projects and due dates.",
-    features: [
-      "Add and organize tasks easily",
-      "Track project-related to-do items",
-      "Set and monitor due dates",
-    ],
-    media: [
-      { type: "image", src: "assets/Project4/1.png" },
-      { type: "image", src: "assets/Project4/2.png" },
-      { type: "image", src: "assets/Project4/3.png" },
-      { type: "image", src: "assets/Project4/4.png" },
-    ],
-    demo: null,
-    github: "https://github.com/Cloudie-yun/IndividualAssignment",
-  },
-];
-
-const journey = [
-  {
-    org: "Current Tech Industries",
-    role: "IT Intern",
-    note: "4 shipped projects: Laravel CRUD system, Vue site rebuild, PrimeVue R&D, React component library",
-    period: "Jun 2026 — Present",
-    badge: "Ongoing",
-    statLabel: "Projects Shipped",
-    statValue: "4",
-  },
-  {
-    org: "INTI International University",
-    role: "Bachelor of Computer Science (Hons) — Software Engineering",
-    note: "Final Year Project: Document-Based Multimodal Chatbot",
-    period: "Aug 2024 — Oct 2026",
-    badge: "Final Semester",
-    statLabel: "CGPA",
-    statValue: "3.86",
-  },
-  {
-    org: "INTI International University",
-    role: "Diploma in Information Technology",
-    note: "Capstone: Full Stack E-Commerce Website for Bakery Shop",
-    period: "Aug 2022 — Jun 2024",
-    badge: "Distinction",
-    statLabel: "CGPA",
-    statValue: "3.79",
-  },
-];
+const { projects, journey, skills } = window.portfolioData;
 
 const GH = ({ size = 15 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -250,7 +34,7 @@ function ThemeControls({ theme, setTheme, accent, setAccent, compact }) {
   return (
     <div className={`flex items-center gap-3 ${compact ? 'flex-wrap' : ''}`}>
       <div className="flex gap-1.5 items-center">
-        {accentPresets.map((a) => {
+        {window.portfolioData.accentPresets.map((a) => {
           const accentValue = theme === 'dark' ? a.dark : a.light;
           const isSelected = accent && accent.name === a.name;
           return (
@@ -295,9 +79,10 @@ function MediaSlide({ item }) {
 }
 
 function MediaCarousel({ media }) {
-  const [idx, setIdx] = useState(0);
+  const [idx, setIdx] = React.useState(0);
   const total = media.length;
-  const dragStart = useRef(null);
+  const dragStart = React.useRef(null);
+
   const onPointerDown = (e) => { dragStart.current = e.clientX; };
   const onPointerUp = (e) => {
     if (dragStart.current === null) return;
@@ -317,7 +102,13 @@ function MediaCarousel({ media }) {
 
   return (
     <div className="relative w-full aspect-video bg-soft overflow-hidden select-none">
-      <div className="media-track h-full drag-area" style={{ transform: `translateX(-${idx * 100}%)` }} onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerLeave={onPointerUp}>
+      <div
+        className="media-track h-full drag-area"
+        style={{ transform: `translateX(-${idx * 100}%)` }}
+        onPointerDown={onPointerDown}
+        onPointerUp={onPointerUp}
+        onPointerLeave={onPointerUp}
+      >
         {media.map((item, i) => (
           <div key={i} className="media-slide h-full overflow-hidden">
             <MediaSlide item={item} />
@@ -351,7 +142,7 @@ function MediaCarousel({ media }) {
 }
 
 function ProjectModal({ project, onClose }) {
-  useEffect(() => {
+  React.useEffect(() => {
     const fn = (e) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', fn);
     document.body.style.overflow = 'hidden';
@@ -459,12 +250,11 @@ function CardThumb({ media }) {
 }
 
 function Projects() {
-  const [active, setActive] = useState(null);
-  const [idx, setIdx] = useState(0);
-  const [filter, setFilter] = useState('all');
-  const trackRef = useRef(null);
+  const [active, setActive] = React.useState(null);
+  const [idx, setIdx] = React.useState(0);
+  const [filter, setFilter] = React.useState('all');
 
-  const filtered = useMemo(
+  const filtered = React.useMemo(
     () => projects.filter((p) => (filter === 'all' ? true : p.type === filter)),
     [filter]
   );
@@ -475,21 +265,22 @@ function Projects() {
     if (window.innerWidth >= 768) return 2;
     return 1;
   };
-  const [visible, setVisible] = useState(getVisible());
 
-  useEffect(() => {
+  const [visible, setVisible] = React.useState(getVisible());
+
+  React.useEffect(() => {
     const fn = () => setVisible(getVisible());
     window.addEventListener('resize', fn);
     return () => window.removeEventListener('resize', fn);
   }, []);
 
-  useEffect(() => { setIdx(0); }, [filter]);
+  React.useEffect(() => { setIdx(0); }, [filter]);
 
   const maxIdx = Math.max(0, filtered.length - visible);
   const prev = () => setIdx((i) => Math.max(0, i - 1));
   const next = () => setIdx((i) => Math.min(maxIdx, i + 1));
 
-  const dragStart = useRef(null);
+  const dragStart = React.useRef(null);
   const onPointerDown = (e) => { dragStart.current = e.clientX; };
   const onPointerUp = (e) => {
     if (dragStart.current === null) return;
@@ -535,10 +326,14 @@ function Projects() {
           ))}
         </div>
 
-        <div className="overflow-hidden border border-soft" ref={trackRef}>
+        <div className="overflow-hidden border border-soft">
           <div className="proj-track drag-area" style={{ transform: `translateX(-${idx * slideW}%)` }} onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerLeave={onPointerUp}>
             {filtered.map((p) => (
-              <div key={p.id} className="proj-slide border-r border-border last:border-r-0 flex flex-col cursor-pointer bg-surface hover:-translate-y-1 hover:shadow-lg transition-all duration-300" onClick={() => setActive(p)}>
+              <div
+                key={p.id}
+                className="proj-slide border-r border-border last:border-r-0 flex flex-col cursor-pointer bg-surface hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+                onClick={() => setActive(p)}
+              >
                 <div className="w-full aspect-video bg-soft overflow-hidden relative">
                   <CardThumb media={p.media} />
                   <span className={`absolute top-2 left-2 font-mono text-xs uppercase tracking-widest px-2 py-0.5 ${p.type === 'work' ? 'bg-accent text-paper' : 'bg-paper/85 text-mid border border-soft'}`}>
@@ -584,7 +379,7 @@ function Projects() {
 }
 
 function Nav({ theme, setTheme, accent, setAccent }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = React.useState(false);
   const links = ["About", "Skills", "Work", "Journey", "Contact"];
 
   return (
@@ -593,9 +388,7 @@ function Nav({ theme, setTheme, accent, setAccent }) {
       <ul className="hidden md:flex gap-10 list-none m-0 p-0">
         {links.map((s) => (
           <li key={s}>
-            <a href={`#${s.toLowerCase()}`} className="font-mono text-xs uppercase tracking-widest text-secondary hover:text-accent transition-colors no-underline">
-              {s}
-            </a>
+            <a href={`#${s.toLowerCase()}`} className="font-mono text-xs uppercase tracking-widest text-secondary hover:text-accent transition-colors no-underline">{s}</a>
           </li>
         ))}
       </ul>
@@ -661,8 +454,8 @@ function Skills() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-soft border border-soft">
           {skills.map((s) => (
             <div key={s.cat} className="bg-paper px-7 py-8 group hover:bg-text transition-colors duration-200 cursor-default">
-              <p className="font-mono text-xs uppercase tracking-wider text-accent mb-3">{s.cat}</p>
-              <p className="text-sm leading-loose text-secondary group-hover:text-bg transition-colors">{s.items}</p>
+              <p className="font-mono text-xs uppercase tracking-wider text-accent group-hover:text-on-dark-accent mb-3">{s.cat}</p>
+              <p className="text-sm leading-loose text-secondary group-hover:text-on-dark-secondary transition-colors">{s.items}</p>
             </div>
           ))}
         </div>
@@ -671,7 +464,7 @@ function Skills() {
   );
 }
 
-function Journey() {
+function JourneySection() {
   return (
     <section id="journey" className="px-8 md:px-14 py-24 border-t border-soft">
       <div className="max-w-5xl mx-auto">
@@ -738,35 +531,16 @@ function Contact() {
   );
 }
 
-function App() {
-  const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem('portfolio-theme');
-    if (saved === 'light' || saved === 'dark') return saved;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  });
-  const [accent, setAccent] = useState(accentPresets[0]);
-
-  useEffect(() => {
-    document.documentElement.style.setProperty('--color-accent', theme === 'dark' ? accent.dark : accent.light);
-  }, [accent, theme]);
-
-  useEffect(() => {
-    localStorage.setItem('portfolio-theme', theme);
-    document.documentElement.dataset.theme = theme;
-  }, [theme]);
-
-  return (
-    <>
-      <Nav theme={theme} setTheme={setTheme} accent={accent} setAccent={setAccent} />
-      <main>
-        <Hero />
-        <Skills />
-        <Projects />
-        <Journey />
-        <Contact />
-      </main>
-    </>
-  );
-}
-
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+window.PortfolioSections = {
+  ThemeControls,
+  MediaSlide,
+  MediaCarousel,
+  ProjectModal,
+  CardThumb,
+  Projects,
+  Nav,
+  Hero,
+  Skills,
+  JourneySection,
+  Contact,
+};

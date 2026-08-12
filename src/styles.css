@@ -36,6 +36,10 @@
   --color-dark-text-secondary: #c4c5c4;
   --color-dark-muted: #aeb1b0;
   --color-dark-border: rgba(255, 255, 255, 0.12);
+
+  --color-on-dark: #f5f4ef;
+  --color-on-dark-secondary: #d0d1ce;
+  --color-on-dark-accent: #8fb4d8;
 }
 
 [data-theme="dark"] {
@@ -55,6 +59,10 @@
   --color-accent-contrast: #101820;
 
   --color-image-overlay: rgba(8, 10, 12, 0.42);
+
+  --color-on-dark: #f5f4ef;
+  --color-on-dark-secondary: #d0d1ce;
+  --color-on-dark-accent: #b1d0ea;
 }
 
 html {
