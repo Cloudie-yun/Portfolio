@@ -11,6 +11,7 @@ import {
   Journey,
   Contact,
 } from './sections.jsx';
+import './styles.css';
 
 function App() {
   const [theme, setTheme] = useState(() => {
