@@ -30,39 +30,36 @@
 
   --color-image-overlay: rgba(15, 15, 14, 0.04);
 
-  --color-dark-bg: #111315;
-  --color-dark-surface: #1a1d20;
-  --color-dark-text: #f4f3ef;
-  --color-dark-text-secondary: #c4c5c4;
-  --color-dark-muted: #aeb1b0;
-  --color-dark-border: rgba(255, 255, 255, 0.12);
-
   --color-on-dark: #f5f4ef;
   --color-on-dark-secondary: #d0d1ce;
   --color-on-dark-accent: #8fb4d8;
 }
 
 [data-theme="dark"] {
-  --color-bg: #202326;
-  --color-surface: #292c30;
-  --color-surface-soft: #32363a;
+  /* Eye-friendly warm charcoal slate palette (soft & balanced contrast) */
+  --color-bg: #1c1d20;
+  --color-surface: #24262b;
+  --color-surface-soft: #2d3036;
 
-  --color-text: #f5f4ef;
-  --color-text-secondary: #d0d1ce;
-  --color-text-muted: #aeb1b0;
+  /* Natural, comfortable typography hierarchy (not glaring pure white) */
+  --color-text: #e6e5e0;
+  --color-text-secondary: #b5b7b5;
+  --color-text-muted: #848786;
 
-  --color-border: #464a4e;
-  --color-border-strong: #5b6065;
+  /* Gentle, low-strain borders */
+  --color-border: #35383f;
+  --color-border-strong: #464b54;
 
-  --color-accent: #8fb4d8;
-  --color-accent-hover: #b1d0ea;
-  --color-accent-contrast: #101820;
+  /* Balanced default accent */
+  --color-accent: #9dbbd7;
+  --color-accent-hover: #bcd3eb;
+  --color-accent-contrast: #181c22;
 
-  --color-image-overlay: rgba(8, 10, 12, 0.42);
+  --color-image-overlay: rgba(18, 20, 24, 0.40);
 
-  --color-on-dark: #f5f4ef;
-  --color-on-dark-secondary: #d0d1ce;
-  --color-on-dark-accent: #b1d0ea;
+  --color-on-dark: #e6e5e0;
+  --color-on-dark-secondary: #b5b7b5;
+  --color-on-dark-accent: #9dbbd7;
 }
 
 html {
@@ -166,23 +163,15 @@ body {
 .text-contrast-secondary { color: var(--color-dark-text-secondary); }
 .text-contrast-muted { color: var(--color-dark-muted); }
 
-.bg-paper\/80 { background-color: rgba(255, 255, 255, 0.8); }
-.bg-ink\/30 { background-color: rgba(23, 23, 22, 0.3); }
-.bg-ink\/20 { background-color: rgba(23, 23, 22, 0.2); }
-.bg-paper\/90 { background-color: rgba(255, 255, 255, 0.9); }
-.bg-paper\/70 { background-color: rgba(255, 255, 255, 0.7); }
-.text-ink\/50 { color: rgba(23, 23, 22, 0.5); }
-.text-ink\/30 { color: rgba(23, 23, 22, 0.3); }
+.bg-paper\/80 { background-color: var(--color-surface); opacity: 0.85; }
+.bg-paper\/90 { background-color: var(--color-surface); opacity: 0.92; }
+.bg-paper\/70 { background-color: var(--color-surface); opacity: 0.75; }
+.bg-ink\/30 { background-color: var(--color-text); opacity: 0.3; }
+.bg-ink\/20 { background-color: var(--color-text); opacity: 0.2; }
+.text-ink\/50 { color: var(--color-text-secondary); }
+.text-ink\/30 { color: var(--color-text-muted); }
 
-[data-theme="dark"] .bg-paper\/80 { background-color: rgba(41, 44, 48, 0.8); }
-[data-theme="dark"] .bg-paper\/90 { background-color: rgba(41, 44, 48, 0.9); }
-[data-theme="dark"] .bg-paper\/70 { background-color: rgba(41, 44, 48, 0.7); }
-[data-theme="dark"] .bg-ink\/30,
-[data-theme="dark"] .bg-ink\/20 { background-color: rgba(245, 244, 239, 0.2); }
-[data-theme="dark"] .text-ink\/50,
-[data-theme="dark"] .text-ink\/30 { color: rgba(245, 244, 239, 0.5); }
-
-/* Make sure color tokens map to expected brand colors for legacy names */
+/* Make sure color tokens map to expected brand colors */
 .bg-soft { background-color: var(--color-surface-soft); }
 .text-soft { color: var(--color-text-muted); }
 .border-soft { border-color: var(--color-border); }
@@ -192,6 +181,116 @@ body {
 .bg-surface { background-color: var(--color-surface); }
 .bg-bg { background-color: var(--color-bg); }
 
+/* Theme toggle switch transitions */
+.theme-switch-track {
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+.theme-switch-thumb {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.25s ease;
+}
+
+@keyframes bounceUp {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-bounce-up {
+  animation: bounceUp 1.2s ease-in-out infinite;
+}
+
+.back-to-top-btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.back-to-top-btn:hover .back-to-top-arrow {
+  animation: bounceUp 0.8s ease-in-out infinite;
+}
+
+/* 3D Flip Card Effect for Skills */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+.skill-flip-card {
+  perspective: 1000px;
+}
+.skill-flip-inner {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.skill-flip-card:hover .skill-flip-inner,
+.skill-flip-card:focus-within .skill-flip-inner,
+.skill-flip-card.is-flipped .skill-flip-inner {
+  transform: rotateY(180deg);
+}
+
+/* Skeleton Loading Shimmer & Pulse */
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-soft) 0%,
+    var(--color-border) 50%,
+    var(--color-surface-soft) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.6s ease-in-out infinite;
+}
+
+.fade-in-content {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile Utilities & Touch Enhancements */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media (max-width: 640px) {
+  /* Ensure flip cards on mobile have adequate height and touch behavior */
+  .skill-flip-card {
+    min-height: 14rem;
+  }
+}
+
 html, body, #root {
   min-height: 100%;
 }
+
